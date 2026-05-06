@@ -4,6 +4,8 @@ import Hero from "../components/Hero";
 import TechStack from "../components/TechStack";
 import InteractiveHub from "../components/InteractiveHub";
 import Experience from "../components/Experience";
+import Footer from "../components/Footer";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -47,12 +49,14 @@ export default function Home() {
 
   return (
     <main className="relative bg-[#070b0a] text-white">
+      <LoadingScreen />
       <Header />
       <div className="relative">
-        {/* Hero — sticky z-0 */}
+        {/* Hero - sticky z-0 */}
         <div
+          id="about-me"
           ref={heroRef}
-          className="sticky z-0"
+          className="sticky z-0 scroll-mt-24"
           style={{ top: `${heroTop}px` }}
         >
           <Hero />
@@ -63,10 +67,11 @@ export default function Home() {
           aria-hidden="true"
         />
 
-        {/* TechStack — sticky z-10 (slides over Hero) */}
+        {/* TechStack - sticky z-10 (slides over Hero) */}
         <div
+          id="my-tech-stacks"
           ref={techRef}
-          className="sticky z-10"
+          className="sticky z-10 scroll-mt-24"
           style={{ top: `${techTop}px` }}
         >
           <TechStack />
@@ -77,10 +82,11 @@ export default function Home() {
           aria-hidden="true"
         />
 
-        {/* InteractiveHub — sticky z-20 (slides over TechStack) */}
+        {/* InteractiveHub - sticky z-20 (slides over TechStack) */}
         <div
+          id="my-projects"
           ref={hubRef}
-          className="sticky z-20"
+          className="sticky z-20 scroll-mt-24"
           style={{ top: `${hubTop}px` }}
         >
           <InteractiveHub />
@@ -91,9 +97,13 @@ export default function Home() {
           aria-hidden="true"
         />
 
-        {/* Experience — relative z-30 (slides over InteractiveHub) */}
-        <div className="relative z-30">
+        {/* Experience - relative z-30 (slides over InteractiveHub) */}
+        <div id="experience" className="relative z-30 scroll-mt-24">
           <Experience />
+        </div>
+
+        <div className="relative z-40">
+          <Footer />
         </div>
       </div>
     </main>

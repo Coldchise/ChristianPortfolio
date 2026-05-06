@@ -7,7 +7,7 @@ import padrellosLogo from "../assets/padrellos.png";
 import anytimefitnessLogo from "../assets/anytimefitness.png";
 import ctcphilippinesLogo from "../assets/CTCphilippines.png";
 
-const VIDEO_SRC =
+export const VIDEO_SRC =
   "https://stream.mux.com/tLkHO1qZoaaQOUeVWo8hEBeGQfySP02EPS02BmnNFyXys.m3u8";
 
 const COMPANIES = [

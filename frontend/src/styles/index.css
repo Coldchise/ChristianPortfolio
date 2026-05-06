@@ -11,6 +11,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
 }
 
 @layer utilities {
