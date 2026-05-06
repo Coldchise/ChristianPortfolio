@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
 import logo from "../assets/logo.png";
 import resumePdf from "../assets/ChristianYVergaraResumes.pdf";
@@ -130,31 +131,54 @@ export default function Header() {
           </a>
         </nav>
       </div>
-      {isResumeOpen && (
-        <div className="fixed inset-0 z-[240] bg-black">
-          <div className="absolute left-0 right-0 top-0 z-10 flex items-center justify-between border-b border-white/10 bg-black/90 px-5 py-4 backdrop-blur-md">
-            <div className="flex items-center gap-3">
-              <img src={logo} alt="" className="h-8 w-auto" />
-              <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/60">
-                RESUME_VIEWER
-              </span>
+      {isResumeOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-[240] bg-black text-white">
+            <div className="absolute left-0 right-0 top-0 z-10 flex h-[73px] items-center justify-between border-b border-white/10 bg-black/95 px-5 backdrop-blur-md">
+              <div className="flex items-center gap-3">
+                <img src={logo} alt="" className="h-8 w-auto" />
+                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/60">
+                  RESUME_VIEWER
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsResumeOpen(false)}
+                className="cursor-target inline-flex items-center gap-2 rounded border border-white/15 bg-white/5 px-3 py-2 font-mono text-[11px] uppercase tracking-wider text-white transition-colors hover:border-[#5ed29c]/60 hover:text-[#5ed29c]"
+              >
+                <X size={14} />
+                Exit
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => setIsResumeOpen(false)}
-              className="cursor-target inline-flex items-center gap-2 rounded border border-white/15 bg-white/5 px-3 py-2 font-mono text-[11px] uppercase tracking-wider text-white transition-colors hover:border-[#5ed29c]/60 hover:text-[#5ed29c]"
-            >
-              <X size={14} />
-              Exit
-            </button>
-          </div>
-          <iframe
-            src={`${resumePdf}#toolbar=1&navpanes=0`}
-            title="Christian Vergara Resume"
-            className="h-full w-full pt-[73px]"
-          />
-        </div>
-      )}
+
+            <div className="absolute inset-x-0 bottom-0 top-[73px] bg-[#101211]">
+              <object
+                data={`${resumePdf}#toolbar=1&navpanes=0&view=FitH`}
+                type="application/pdf"
+                className="h-full w-full bg-[#101211]"
+                aria-label="Christian Vergara Resume"
+              >
+                <embed
+                  src={`${resumePdf}#toolbar=1&navpanes=0&view=FitH`}
+                  type="application/pdf"
+                  className="h-full w-full bg-[#101211]"
+                />
+                <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
+                  <p className="max-w-md font-mono text-sm text-white/70">
+                    Your browser blocked the embedded PDF viewer.
+                  </p>
+                  <a
+                    href={resumePdf}
+                    className="cursor-target rounded border border-[#5ed29c]/50 px-4 py-2 font-mono text-[12px] uppercase tracking-wider text-[#5ed29c] transition-colors hover:bg-[#5ed29c] hover:text-black"
+                  >
+                    Open Resume
+                  </a>
+                </div>
+              </object>
+            </div>
+          </div>,
+          document.body,
+        )}
     </header>
   );
 }
