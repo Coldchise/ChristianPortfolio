@@ -16,10 +16,6 @@ export default function Home() {
   const [hubTop, setHubTop] = useState(0);
 
   useEffect(() => {
-    // For each sticky section: if its content is taller than the viewport,
-    // use a negative "top" so it scrolls naturally through its full height
-    // before sticking. Once its bottom aligns with the viewport bottom, it
-    // sticks and the next section slides over it.
     const calculate = () => {
       const viewportH = window.innerHeight;
       if (heroRef.current) {

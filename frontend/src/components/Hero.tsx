@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react";
 import Hls from "hls.js";
 import { ArrowRight, Github } from "lucide-react";
 import mePortrait from "../assets/me.PNG";
+import jmjLogo from "../assets/JMJlogo.png";
+import beyondfoodsolutionLogo from "../assets/beyondfoodsolution logo.png";
 import c8nnectLogo from "../assets/C8nnectPicture.png";
 import padrellosLogo from "../assets/padrellos.png";
 import anytimefitnessLogo from "../assets/anytimefitness.png";
@@ -11,6 +13,8 @@ export const VIDEO_SRC =
   "https://stream.mux.com/tLkHO1qZoaaQOUeVWo8hEBeGQfySP02EPS02BmnNFyXys.m3u8";
 
 const COMPANIES = [
+  { src: jmjLogo, alt: "JMJ" },
+  { src: beyondfoodsolutionLogo, alt: "Beyond Food Solution" },
   { src: c8nnectLogo, alt: "C8nnect" },
   { src: padrellosLogo, alt: "Padrellos Construction" },
   { src: anytimefitnessLogo, alt: "Anytime Fitness" },
