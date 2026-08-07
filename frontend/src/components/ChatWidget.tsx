@@ -14,6 +14,62 @@ const STARTER_QUESTIONS = [
   "What is his Contact Details?",
 ];
 
+function FormattedMessage({ content, isUser }: { content: string; isUser: boolean }) {
+  if (isUser) {
+    return <div className="whitespace-pre-wrap">{content}</div>;
+  }
+
+  const lines = content.split("\n");
+
+  return (
+    <div className="space-y-2 leading-relaxed text-[13.5px]">
+      {lines.map((line, idx) => {
+        const trimmed = line.trim();
+        if (!trimmed) return null;
+
+        // Check headers (e.g. ### Header)
+        const isHeader = /^#{1,6}\s+/.test(trimmed);
+        const headerText = trimmed.replace(/^#{1,6}\s+/, "");
+
+        // Check bullet or numbered list items (e.g. 1. or - or *)
+        const isList = /^(\d+\.|\-|\*)\s+/.test(trimmed);
+
+        const renderInline = (str: string) => {
+          const parts = str.split(/(\*\*.*?\*\*)/g);
+          return parts.map((part, i) => {
+            if (part.startsWith("**") && part.endsWith("**")) {
+              return (
+                <strong key={i} className="font-semibold text-[#5ed29c]">
+                  {part.slice(2, -2)}
+                </strong>
+              );
+            }
+            return part;
+          });
+        };
+
+        if (isHeader) {
+          return (
+            <div key={idx} className="font-bold text-[#5ed29c] pt-2 pb-1 text-[14px]">
+              {renderInline(headerText)}
+            </div>
+          );
+        }
+
+        if (isList) {
+          return (
+            <div key={idx} className="pl-3 border-l-2 border-[#5ed29c]/40 my-1.5 py-0.5 text-white/95">
+              {renderInline(trimmed)}
+            </div>
+          );
+        }
+
+        return <div key={idx} className="text-white/90">{renderInline(trimmed)}</div>;
+      })}
+    </div>
+  );
+}
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -151,13 +207,13 @@ export default function ChatWidget() {
                 }`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[13px] leading-relaxed font-inter ${
+                  className={`max-w-[85%] rounded-2xl px-4 py-3 text-[13px] leading-relaxed font-inter ${
                     msg.role === "user"
                       ? "bg-[#5ed29c] text-black font-medium rounded-br-xs shadow-[0_4px_14px_rgba(94,210,156,0.25)]"
                       : "bg-[#181c1a] text-white/90 border border-white/10 rounded-bl-xs shadow-md"
                   }`}
                 >
-                  {msg.content}
+                  <FormattedMessage content={msg.content} isUser={msg.role === "user"} />
                 </div>
               </div>
             ))}
