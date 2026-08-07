@@ -13,16 +13,6 @@ interface Experience {
 
 const EXPERIENCES: Experience[] = [
   {
-    role: "Frontend Lead",
-    company: "AWS JRU Club",
-    period: "February 2026 – Present",
-    current: true,
-    bullets: [
-      "Spearhead frontend development initiatives and mentor peers in modern web technologies and UI/UX best practices.",
-      "Guide the architectural design and implementation of club projects, ensuring responsive, accessible, and highly interactive user interfaces.",
-    ],
-  },
-  {
     role: "Software Developer",
     company: "C8nnect IT Solutions",
     type: "Full-time · Remote",
@@ -44,6 +34,15 @@ const EXPERIENCES: Experience[] = [
       "GSAP",
       "Tailwind CSS",
       "Three.js",
+    ],
+  },
+  {
+    role: "Frontend Lead",
+    company: "AWS JRU Club",
+    period: "February 2026 – July 2026",
+    bullets: [
+      "Spearhead frontend development initiatives and mentor peers in modern web technologies and UI/UX best practices.",
+      "Guide the architectural design and implementation of club projects, ensuring responsive, accessible, and highly interactive user interfaces.",
     ],
   },
   {

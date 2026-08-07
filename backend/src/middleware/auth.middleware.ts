@@ -1,6 +1,8 @@
 import type { RequestHandler } from "express";
-import { TokenExpiredError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { verifyAccessToken } from "../lib/jwt";
+
+const { TokenExpiredError } = jwt;
 
 export interface AuthLocals {
   userId: string;

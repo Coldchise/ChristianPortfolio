@@ -14,7 +14,7 @@ const C = {
 
 const CODE_SOURCE = `const myTechStacks = {
   Frontend: [
-    "React JS",
+    "React TS",
     "Tailwind",
     "GSAP",
     "Three.js",
@@ -22,7 +22,7 @@ const CODE_SOURCE = `const myTechStacks = {
     "Vue",
     "Android Studio",
   ],
-  Backend: ["Node JS", "Express JS", ".NET"],
+  Backend: ["Node JS", "Express JS", ".NET", "Spring Boot"],
   Database: ["PostgreSQL", "Firebase", "MySQL"],
   Tools: [
     "Postman",
@@ -87,7 +87,9 @@ const renderSyntax = (line: string) => {
 };
 
 export default function TechStack() {
+  const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const [hasStarted, setHasStarted] = useState(false);
   const [visibleChars, setVisibleChars] = useState(0);
 
   const codeLines = useMemo(() => CODE_SOURCE.split("\n"), []);
@@ -109,6 +111,26 @@ export default function TechStack() {
   }, [lineStarts, visibleChars]);
 
   useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasStarted(true);
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     const grid = gridRef.current;
     if (!grid) return;
 
@@ -125,7 +147,7 @@ export default function TechStack() {
   }, []);
 
   useEffect(() => {
-    if (visibleChars >= CODE_SOURCE.length) {
+    if (!hasStarted || visibleChars >= CODE_SOURCE.length) {
       return;
     }
 
@@ -137,10 +159,13 @@ export default function TechStack() {
     );
 
     return () => window.clearTimeout(typeId);
-  }, [visibleChars]);
+  }, [hasStarted, visibleChars]);
 
   return (
-    <section className="relative z-[120] min-h-screen overflow-hidden rounded-t-[1em] bg-[#0a0c0b] px-5 py-16 sm:px-6 lg:px-10 lg:py-24">
+    <section
+      ref={sectionRef}
+      className="relative z-[120] min-h-screen overflow-hidden rounded-t-[1em] bg-[#0a0c0b] px-5 py-16 sm:px-6 lg:px-10 lg:py-24"
+    >
       <div
         ref={gridRef}
         className="tech-stack-grid absolute inset-[-15%]"

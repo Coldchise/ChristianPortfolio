@@ -13,7 +13,7 @@ export const VIDEO_SRC =
   "https://stream.mux.com/tLkHO1qZoaaQOUeVWo8hEBeGQfySP02EPS02BmnNFyXys.m3u8";
 
 const COMPANIES = [
-  { src: jmjLogo, alt: "JMJ" },
+  { src: jmjLogo, alt: "JMJ", extraClass: "-mr-7" },
   { src: beyondfoodsolutionLogo, alt: "Beyond Food Solution" },
   { src: c8nnectLogo, alt: "C8nnect" },
   { src: padrellosLogo, alt: "Padrellos Construction" },
@@ -65,37 +65,182 @@ const MailIcon = ({ size = 16 }: { size?: number }) => (
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    const notifyReady = () => {
+      window.dispatchEvent(new CustomEvent("hero-video-ready"));
+    };
+
+    video.addEventListener("loadeddata", notifyReady);
+    video.addEventListener("canplay", notifyReady);
+    video.addEventListener("playing", notifyReady);
+
+    if (video.readyState >= 2) {
+      notifyReady();
+    }
+
+    let hls: Hls | null = null;
+
     if (Hls.isSupported()) {
-      const hls = new Hls({ enableWorker: false });
+      hls = new Hls({ enableWorker: false });
       hls.loadSource(VIDEO_SRC);
       hls.attachMedia(video);
-      return () => hls.destroy();
-    }
-    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(() => {});
+      });
+    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = VIDEO_SRC;
+      video.play().catch(() => {});
     }
+
+    return () => {
+      video.removeEventListener("loadeddata", notifyReady);
+      video.removeEventListener("canplay", notifyReady);
+      video.removeEventListener("playing", notifyReady);
+      if (hls) hls.destroy();
+    };
   }, []);
+
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftStartRef = useRef(0);
+  const scrollPosRef = useRef(0);
+
+  useEffect(() => {
+    let animId: number;
+    const scroll = () => {
+      const el = marqueeRef.current;
+      if (el) {
+        const halfWidth = el.scrollWidth / 2;
+        if (!isDraggingRef.current) {
+          if (halfWidth > 0) {
+            scrollPosRef.current += 0.8;
+            if (scrollPosRef.current >= halfWidth) {
+              scrollPosRef.current -= halfWidth;
+            } else if (scrollPosRef.current < 0) {
+              scrollPosRef.current += halfWidth;
+            }
+            el.scrollLeft = scrollPosRef.current;
+          }
+        } else {
+          scrollPosRef.current = el.scrollLeft;
+        }
+      }
+      animId = requestAnimationFrame(scroll);
+    };
+    animId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animId);
+  }, []);
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    isDraggingRef.current = true;
+    const el = marqueeRef.current;
+    if (!el) return;
+    startXRef.current = e.clientX;
+    scrollLeftStartRef.current = el.scrollLeft;
+    scrollPosRef.current = el.scrollLeft;
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDraggingRef.current || !marqueeRef.current) return;
+      const walk = e.clientX - startXRef.current;
+      const newPos = scrollLeftStartRef.current - walk;
+      marqueeRef.current.scrollLeft = newPos;
+      scrollPosRef.current = newPos;
+    };
+
+    const handleMouseUp = () => {
+      isDraggingRef.current = false;
+      if (marqueeRef.current) {
+        scrollPosRef.current = marqueeRef.current.scrollLeft;
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!e.touches[0]) return;
+    isDraggingRef.current = true;
+    const el = marqueeRef.current;
+    if (!el) return;
+    startXRef.current = e.touches[0].clientX;
+    scrollLeftStartRef.current = el.scrollLeft;
+    scrollPosRef.current = el.scrollLeft;
+  };
+
+  useEffect(() => {
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isDraggingRef.current || !marqueeRef.current || !e.touches[0]) return;
+      const walk = e.touches[0].clientX - startXRef.current;
+      const newPos = scrollLeftStartRef.current - walk;
+      marqueeRef.current.scrollLeft = newPos;
+      scrollPosRef.current = newPos;
+    };
+
+    const handleTouchEnd = () => {
+      isDraggingRef.current = false;
+      if (marqueeRef.current) {
+        scrollPosRef.current = marqueeRef.current.scrollLeft;
+      }
+    };
+
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchend", handleTouchEnd);
+    return () => {
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    const el = marqueeRef.current;
+    if (!el) return;
+    const halfWidth = el.scrollWidth / 2;
+    if (halfWidth > 0) {
+      if (el.scrollLeft >= halfWidth) {
+        el.scrollLeft -= halfWidth;
+        scrollPosRef.current = el.scrollLeft;
+      } else if (el.scrollLeft <= 0) {
+        el.scrollLeft += halfWidth;
+        scrollPosRef.current = el.scrollLeft;
+      }
+    }
+  };
 
   const companiesCard = (
     <div className="cursor-target liquid-glass-card relative overflow-hidden p-5 rounded-2xl w-full lg:w-[480px] max-w-[480px] lg:shrink-0">
-      <div className="text-white/60 font-inter text-[14px] mb-4 relative z-10">
+      <div className="text-white/60 font-inter text-[14px] mb-4 relative z-10 select-none">
         [ Companies Served ]
       </div>
-      <div className="overflow-hidden">
-        <div className="flex items-center gap-12 animate-marquee w-max">
-          {[...COMPANIES, ...COMPANIES].map((company, i) => (
-            <img
-              key={i}
-              src={company.src}
-              alt={company.alt}
-              className="h-10 w-auto object-contain shrink-0 opacity-90"
-            />
-          ))}
+      <div
+        ref={marqueeRef}
+        className="no-scrollbar overflow-x-hidden cursor-grab active:cursor-grabbing select-none"
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        onScroll={handleScroll}
+      >
+        <div className="flex items-center gap-12 w-max py-1">
+          {[...COMPANIES, ...COMPANIES, ...COMPANIES, ...COMPANIES].map(
+            (company, i) => (
+              <img
+                key={i}
+                src={company.src}
+                alt={company.alt}
+                className={`h-10 w-auto object-contain shrink-0 opacity-90 pointer-events-none ${company.extraClass ?? ""}`}
+              />
+            ),
+          )}
         </div>
       </div>
     </div>
@@ -218,7 +363,7 @@ export default function Hero() {
           {/* Description + Companies row */}
           <div className="mt-8 flex flex-col gap-8 w-full lg:flex-row lg:items-end lg:justify-between">
             <p className="font-inter text-[14px] leading-relaxed max-w-[512px] text-white/70">
-              I'm a software developer and first-year BSIT student specializing in the MERN stack. From crafting engaging, user-focused frontends to engineering production-ready backends, I help businesses thrive by building the custom systems they need to succeed.
+              I'm a software developer, competitive student, and 2nd-year BSIT student specializing in full-stack development. From crafting engaging, user-focused frontends to engineering production-ready backends, I help businesses thrive by building the custom systems they need to succeed.
             </p>
 
             {companiesCard}

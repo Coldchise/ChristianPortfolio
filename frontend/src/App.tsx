@@ -8,6 +8,8 @@ import Hero from "./components/Hero";
 import InteractiveHub from "./components/InteractiveHub";
 import LoadingScreen from "./components/LoadingScreen";
 import TechStack from "./components/TechStack";
+import ConnectSection from "./components/ConnectSection";
+import ChatWidget from "./components/ChatWidget";
 
 function TestWrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -26,11 +28,13 @@ export default function App() {
         parallaxOn
         hoverDuration={0.95}
       />
+      <ChatWidget />
       <Routes>
         <Route path="/" element={<Home />} />
 
         {/*test*/}
         <Route path="/experience" element={<TestWrapper><Experience /></TestWrapper>} />
+        <Route path="/connect" element={<TestWrapper><ConnectSection /></TestWrapper>} />
         <Route path="/footer" element={<TestWrapper><Footer /></TestWrapper>} />
         <Route path="/header" element={<TestWrapper><Header /></TestWrapper>} />
         <Route path="/hero" element={<TestWrapper><Hero /></TestWrapper>} />

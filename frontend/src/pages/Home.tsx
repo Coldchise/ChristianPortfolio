@@ -4,6 +4,7 @@ import Hero from "../components/Hero";
 import TechStack from "../components/TechStack";
 import InteractiveHub from "../components/InteractiveHub";
 import Experience from "../components/Experience";
+import ConnectSection from "../components/ConnectSection";
 import Footer from "../components/Footer";
 import LoadingScreen from "../components/LoadingScreen";
 
@@ -11,9 +12,11 @@ export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const techRef = useRef<HTMLDivElement>(null);
   const hubRef = useRef<HTMLDivElement>(null);
+  const expRef = useRef<HTMLDivElement>(null);
   const [heroTop, setHeroTop] = useState(0);
   const [techTop, setTechTop] = useState(0);
   const [hubTop, setHubTop] = useState(0);
+  const [expTop, setExpTop] = useState(0);
 
   useEffect(() => {
     const calculate = () => {
@@ -27,6 +30,9 @@ export default function Home() {
       if (hubRef.current) {
         setHubTop(Math.min(0, -(hubRef.current.offsetHeight - viewportH)));
       }
+      if (expRef.current) {
+        setExpTop(Math.min(0, -(expRef.current.offsetHeight - viewportH)));
+      }
     };
 
     calculate();
@@ -36,6 +42,7 @@ export default function Home() {
     if (heroRef.current) ro.observe(heroRef.current);
     if (techRef.current) ro.observe(techRef.current);
     if (hubRef.current) ro.observe(hubRef.current);
+    if (expRef.current) ro.observe(expRef.current);
 
     return () => {
       window.removeEventListener("resize", calculate);
@@ -93,12 +100,27 @@ export default function Home() {
           aria-hidden="true"
         />
 
-        {/* Experience - relative z-30 (slides over InteractiveHub) */}
-        <div id="experience" className="relative z-30 scroll-mt-24">
+        {/* Experience - sticky z-30 (slides over InteractiveHub) */}
+        <div
+          id="experience"
+          ref={expRef}
+          className="sticky z-30 scroll-mt-24"
+          style={{ top: `${expTop}px` }}
+        >
           <Experience />
         </div>
 
-        <div className="relative z-40">
+        <div
+          className="h-[62svh] sm:h-[52svh] lg:h-[42vh]"
+          aria-hidden="true"
+        />
+
+        {/* ConnectSection - relative z-40 (slides over Experience) */}
+        <div id="connect" className="relative z-40 scroll-mt-24">
+          <ConnectSection />
+        </div>
+
+        <div className="relative z-50">
           <Footer />
         </div>
       </div>

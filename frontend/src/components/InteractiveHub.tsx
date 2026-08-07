@@ -7,6 +7,9 @@ import anytimefitnessImg from "../assets/projects/anytimefitness.PNG";
 import spherehrImg from "../assets/projects/spherehr.PNG";
 import mathwormImg from "../assets/projects/mathworm.PNG";
 import jeepneyImg from "../assets/projects/jeepneytracking.PNG";
+import beyondfoodsolutionImg from "../assets/projects/beyondfoodsolution.PNG";
+import crmImg from "../assets/projects/CRM.PNG";
+import lguImg from "../assets/LGU.PNG";
 import walkToEarnImg from "../assets/achievement/walktoearn.png";
 import awsImg from "../assets/achievement/AWSwebsite.jpeg";
 
@@ -39,6 +42,45 @@ const MODULES: Module[] = [
     techStack: ["React.js", "Three.js", "GSAP", "Tailwind CSS"],
     image: c8nnectImg,
     link: "https://c8nnect.com",
+  },
+  {
+    id: "beyondfoodsolution",
+    type: "project",
+    category: "E-COMMERCE",
+    fileName: "beyond_food_solution",
+    title: "Beyond Food Solutions",
+    shortDescription: "Enterprise e-commerce & admin system",
+    description:
+      "A comprehensive enterprise e-commerce platform engineered for Beyond Food Solutions and JMJ. Features integrated online payment gateways, dynamic survey & promotional coupon systems, and an end-to-end admin monitoring dashboard that actively drives daily operational efficiency and company revenue.",
+    techStack: ["React TS", "Tailwind CSS", "Express.js", "PostgreSQL"],
+    image: beyondfoodsolutionImg,
+    link: "https://beyondfoodsolutions.com/",
+  },
+  {
+    id: "allcrm",
+    type: "project",
+    category: "SAAS",
+    fileName: "all_crm",
+    title: "All CRM",
+    shortDescription: "Unified omnichannel CRM platform",
+    description:
+      "An all-in-one Customer Relationship Management (CRM) platform consolidating multi-channel social media communications (Facebook, TikTok, LinkedIn, Instagram, X/Twitter) into a single interactive dashboard. Enables streamlined social posting, contact tracking, purchase history management, and unified support notes — actively serving JMJ, C8nnect, and upcoming Anytime Fitness deployments.",
+    techStack: ["React TS", "Tailwind CSS", "Express.js", "PostgreSQL"],
+    image: crmImg,
+    link: "https://allcrm.c8nnect.com/",
+  },
+  {
+    id: "smartlgu",
+    type: "project",
+    category: "GOVTECH",
+    fileName: "smart_lgu",
+    title: "My Smart LGU Indang",
+    shortDescription: "City hall municipal digitalization platform",
+    description:
+      "Pioneering the full-stack development of a digital governance platform designed to modernize municipal operations for the City Halls of Indang and Malolos. Centralizes public services, administrative records, and constituent communications into a secure, accessible web infrastructure.",
+    techStack: ["React TS", "Tailwind CSS", "Express.js", "PostgreSQL"],
+    image: lguImg,
+    link: "https://c8nnect.mysmartlgu.com",
   },
   {
     id: "padrellos",

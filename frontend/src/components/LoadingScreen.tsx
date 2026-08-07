@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import logo from "../assets/logo.png";
 import mePortrait from "../assets/me.PNG";
+import jmjLogo from "../assets/JMJlogo.png";
+import beyondfoodsolutionLogo from "../assets/beyondfoodsolution logo.png";
 import c8nnectLogo from "../assets/C8nnectPicture.png";
 import padrellosLogo from "../assets/padrellos.png";
 import anytimefitnessLogo from "../assets/anytimefitness.png";
@@ -11,9 +13,11 @@ import anytimefitnessProject from "../assets/projects/anytimefitness.PNG";
 import spherehrProject from "../assets/projects/spherehr.PNG";
 import mathwormProject from "../assets/projects/mathworm.PNG";
 import jeepneyProject from "../assets/projects/jeepneytracking.PNG";
+import beyondfoodsolutionProject from "../assets/projects/beyondfoodsolution.PNG";
+import crmProject from "../assets/projects/CRM.PNG";
+import lguProject from "../assets/LGU.PNG";
 import walkToEarnImg from "../assets/achievement/walktoearn.png";
 import awsImg from "../assets/achievement/AWSwebsite.jpeg";
-import { VIDEO_SRC } from "./Hero";
 
 const LOAD_TIMEOUT_MS = 9000;
 const MIN_VISIBLE_MS = 900;
@@ -41,19 +45,61 @@ function loadImage(src: string) {
   );
 }
 
-function loadVideoManifest(src: string) {
+function loadHeroVideo() {
+  return withTimeout(
+    new Promise<void>((resolve) => {
+      const checkVideoReady = () => {
+        const video = document.querySelector<HTMLVideoElement>("section video");
+        if (video && video.readyState >= 2) {
+          resolve();
+          return true;
+        }
+        return false;
+      };
+
+      if (checkVideoReady()) return;
+
+      const handleReady = () => resolve();
+      window.addEventListener("hero-video-ready", handleReady, { once: true });
+
+      const intervalId = window.setInterval(() => {
+        if (checkVideoReady()) {
+          window.clearInterval(intervalId);
+          window.removeEventListener("hero-video-ready", handleReady);
+        }
+      }, 100);
+
+      window.setTimeout(() => {
+        window.clearInterval(intervalId);
+        window.removeEventListener("hero-video-ready", handleReady);
+      }, LOAD_TIMEOUT_MS);
+    }),
+    LOAD_TIMEOUT_MS,
+  );
+}
+
+const CONNECT_VIDEO_SRC =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_215831_c6a8989c-d716-4d8d-8745-e972a2eec711.mp4";
+
+function loadConnectVideo() {
   const controller = new AbortController();
   const timeoutId = window.setTimeout(() => controller.abort(), LOAD_TIMEOUT_MS);
 
   return withTimeout(
-    fetch(src, {
+    fetch(CONNECT_VIDEO_SRC, {
       cache: "force-cache",
       signal: controller.signal,
     })
       .catch(() => undefined)
       .finally(() => window.clearTimeout(timeoutId)),
+    LOAD_TIMEOUT_MS,
   );
 }
+
+const BASE_VOXEL_IMG =
+  "https://soft-zoom-63098134.figma.site/_assets/v11/5c9f982199fde1d9b85a20e5396f0fa7bacaf9a3.png?w=2560";
+const REVEAL_VOXEL_IMG =
+  "https://soft-zoom-63098134.figma.site/_assets/v11/6be2165e31648955b4e071f4cf2a50bc572b9bfd.png?w=1536";
 
 export default function LoadingScreen() {
   const [progress, setProgress] = useState(0);
@@ -64,6 +110,8 @@ export default function LoadingScreen() {
     () => [
       logo,
       mePortrait,
+      jmjLogo,
+      beyondfoodsolutionLogo,
       c8nnectLogo,
       padrellosLogo,
       anytimefitnessLogo,
@@ -74,8 +122,13 @@ export default function LoadingScreen() {
       spherehrProject,
       mathwormProject,
       jeepneyProject,
+      beyondfoodsolutionProject,
+      crmProject,
+      lguProject,
       walkToEarnImg,
       awsImg,
+      BASE_VOXEL_IMG,
+      REVEAL_VOXEL_IMG,
     ],
     [],
   );
@@ -95,7 +148,8 @@ export default function LoadingScreen() {
     const startedAt = performance.now();
     const tasks = [
       ...imageAssets.map((src) => () => loadImage(src)),
-      () => loadVideoManifest(VIDEO_SRC),
+      () => loadHeroVideo(),
+      () => loadConnectVideo(),
     ];
     let completed = 0;
 
