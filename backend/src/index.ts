@@ -2,11 +2,11 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
-import { logger } from "./lib/logger";
-import authRoutes from "./modules/auth/auth.route";
-import contactRoutes from "./modules/contact/contact.routes";
-import projectRoutes from "./modules/projects/project.routes";
-import chatRoutes from "./modules/chat/chat.routes";
+import { logger } from "./lib/logger.js";
+import authRoutes from "./modules/auth/auth.route.js";
+import contactRoutes from "./modules/contact/contact.routes.js";
+import projectRoutes from "./modules/projects/project.routes.js";
+import chatRoutes from "./modules/chat/chat.routes.js";
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -14,7 +14,7 @@ const PORT = process.env.PORT ?? 3000;
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL ?? "http://localhost:5173",
+    origin: (origin, callback) => callback(null, true),
     credentials: true,
   }),
 );

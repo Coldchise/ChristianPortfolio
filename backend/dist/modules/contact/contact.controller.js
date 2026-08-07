@@ -1,5 +1,5 @@
-import { db } from "../../database/drizzle";
-import { messages } from "../../database/schema";
+import { db } from "../../database/drizzle.js";
+import { messages } from "../../database/schema.js";
 export const submitContact = async (req, res, next) => {
     try {
         const { name, email, message } = req.body;

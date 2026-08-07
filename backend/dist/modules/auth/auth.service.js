@@ -1,9 +1,9 @@
 import { createHash, randomBytes } from "crypto";
 import { and, eq } from "drizzle-orm";
-import { db } from "../../database/drizzle";
-import { refreshTokens, users } from "../../database/schema";
-import { getDummyHash, hashPassword, verifyPassword } from "../../lib/bcrypt";
-import { REFRESH_TOKEN_EXPIRES_MS, signAccessToken } from "../../lib/jwt";
+import { db } from "../../database/drizzle.js";
+import { refreshTokens, users } from "../../database/schema.js";
+import { getDummyHash, hashPassword, verifyPassword } from "../../lib/bcrypt.js";
+import { REFRESH_TOKEN_EXPIRES_MS, signAccessToken } from "../../lib/jwt.js";
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
 function hashToken(raw) {

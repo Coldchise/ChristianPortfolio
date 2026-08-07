@@ -1,5 +1,5 @@
-import { loginSchema, registerSchema } from "./auth.validation";
-import * as service from "./auth.service";
+import { loginSchema, registerSchema } from "./auth.validation.js";
+import * as service from "./auth.service.js";
 const COOKIE_OPTIONS = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

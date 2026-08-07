@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { processChatMessage } from "./chat.service";
+import { processChatMessage } from "./chat.service.js";
 
 export async function handleChat(req: Request, res: Response): Promise<void> {
   try {

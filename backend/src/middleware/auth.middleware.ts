@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
-import { verifyAccessToken } from "../lib/jwt";
+import { verifyAccessToken } from "../lib/jwt.js";
 
 const { TokenExpiredError } = jwt;
 

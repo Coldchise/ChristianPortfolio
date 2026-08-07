@@ -1,4 +1,4 @@
-import { processChatMessage } from "./chat.service";
+import { processChatMessage } from "./chat.service.js";
 export async function handleChat(req, res) {
     try {
         const { messages } = req.body;

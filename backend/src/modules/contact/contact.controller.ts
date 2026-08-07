@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
-import { db } from "../../database/drizzle";
-import { messages } from "../../database/schema";
+import { db } from "../../database/drizzle.js";
+import { messages } from "../../database/schema.js";
 
 export const submitContact: RequestHandler = async (req, res, next) => {
   try {

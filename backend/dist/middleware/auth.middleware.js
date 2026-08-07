@@ -1,5 +1,6 @@
-import { TokenExpiredError } from "jsonwebtoken";
-import { verifyAccessToken } from "../lib/jwt";
+import jwt from "jsonwebtoken";
+import { verifyAccessToken } from "../lib/jwt.js";
+const { TokenExpiredError } = jwt;
 export const authenticate = (req, res, next) => {
     const header = req.headers.authorization;
     if (!header?.startsWith("Bearer ")) {

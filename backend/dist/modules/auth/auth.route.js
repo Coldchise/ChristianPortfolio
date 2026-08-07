@@ -1,7 +1,7 @@
 import { Router } from "express";
 import rateLimit from "express-rate-limit";
-import { authenticate } from "../../middleware/auth.middleware";
-import { login, logout, me, refresh, register } from "./auth.controller";
+import { authenticate } from "../../middleware/auth.middleware.js";
+import { login, logout, me, refresh, register } from "./auth.controller.js";
 const registerLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
     max: 5,

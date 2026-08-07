@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
-import { db } from "../../database/drizzle";
-import { projects } from "../../database/schema";
+import { db } from "../../database/drizzle.js";
+import { projects } from "../../database/schema.js";
 
 export const getProjects: RequestHandler = async (_req, res, next) => {
   try {

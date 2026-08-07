@@ -1,4 +1,4 @@
-import { logger } from "../../lib/logger";
+import { logger } from "../../lib/logger.js";
 
 const SYSTEM_PROMPT = `
 You are the official AI Assistant for Christian Vergara's portfolio! 🌟

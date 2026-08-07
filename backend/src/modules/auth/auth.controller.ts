@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
-import type { AuthLocals } from "../../middleware/auth.middleware";
-import { loginSchema, registerSchema } from "./auth.validation";
-import * as service from "./auth.service";
+import type { AuthLocals } from "../../middleware/auth.middleware.js";
+import { loginSchema, registerSchema } from "./auth.validation.js";
+import * as service from "./auth.service.js";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
